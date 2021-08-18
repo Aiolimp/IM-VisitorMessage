@@ -9,6 +9,5 @@ export function handleClientMethods(methodName, params) {
             console.log(result)
         })
     } catch (error) {
-        console.log("====handleClientMethods error====", error)
     }
 }
