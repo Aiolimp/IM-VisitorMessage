@@ -25,7 +25,6 @@ methods: {
         let obj = {
             url:location.host
         }
-       
         let routeUrl = this.$router.resolve({path:'/conversation',query: obj})
         window.open(routeUrl .href, '_blank');
         

@@ -11,7 +11,6 @@ const router = new VueRouter({
 let routerArr = [];
 router.beforeEach((to, from, next) => {
   routerArr.push(to.path);
-  // console.log(routerArr);
   next();
 });
 

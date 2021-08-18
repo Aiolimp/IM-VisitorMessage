@@ -272,7 +272,6 @@ export default {
             "CppOnOrayInfo",
             { OrayStatus: OrayStatus },
             (error, result) => {
-              console.log("远程未开始的轮巡");
             }
           );
         } catch (e) {
@@ -296,8 +295,6 @@ export default {
   watch: {
     teleMessage: {
       handler(obj1, obj2) {
-        console.log("obj1", obj1);
-        console.log("obj2", obj2);
         //通知客服创建远程
         if (obj1 && obj1.OrayInit) {
           //访客远程创建成功
@@ -335,9 +332,6 @@ export default {
     },
     ModMessage: {
       handler(obj1, obj2) {
-        console.log("obj1", obj1);
-        console.log("obj2", obj2);
-        console.log(this.statusTimer);
         if (obj1.Info.Status !== obj2.Info.Status && obj1.Info.Status == "0") {
           this.RcstartMessage = "";
           this.RcendMessage = "远程控制已结束";
@@ -345,7 +339,6 @@ export default {
           clearInterval(that.statusTimer); //关闭远程进行中的轮巡时间
           that.statusTimer = null;
           this.$bus.$emit("sendCloseDistance", 1); //检测到客服断开，不需要再发重复结束消息
-          console.log("远程控制中轮巡时间关闭");
           this.$store.commit("getLongTwoUrl", ""); //清除VUEX里的远程地址信息
           const data = {
             msgText: "远程控制已结束",
@@ -360,13 +353,11 @@ export default {
     },
     refuseDate(a, b) {
       if (a && a.subMsgType == "refuserc") {
-        console.log(a);
         this.showLongDistance = false;
       }
     },
     "sessionObj.sessionType": {
       handler: function (a, b) {
-        console.log("********sessionType", a);
         if (a == 3) {
           this.IsQuote();
         }
@@ -394,9 +385,7 @@ export default {
       }
     },
     pageList(a, b) {
-      console.log(a, b);
       if (b.length) {
-        console.log(a, this.historySessionList);
         let arr = [];
         let list1 = [...a];
         list1.forEach((item, index) => {
@@ -437,15 +426,12 @@ export default {
           this.isSave = true;
         }
         this.progressSessionList = [...arr, ...this.progressSessionList];
-        console.log(this.progressSessionList);
-        console.log(this.sessionObj);
       }
       // if(!a.length && a.length){
       //   this.isSave = false;
       // }
     },
     currentMessageList(a, b) {
-      console.log(a, b);
       if (a.length && !b.length) {
         //获取历史消息进行整合
         let arr = [];
@@ -463,7 +449,6 @@ export default {
                 item.payload.data.subMsgType !== "refuserc"
               );
             } else {
-              console.log("不相等", item.payload.data.subMsgType);
               return (
                 item.payload.data.subMsgType !== "rcend" && //结束会话，谁发送的谁显示
                 item.payload.data.subMsgType !== "rcfailure" && //结束会话，谁发送的谁显示
@@ -476,13 +461,10 @@ export default {
             return true;
           }
         });
-        console.log(arr);
         this.getHistoryList(arr);
       }
     },
     messageList(a, b) {
-      console.log(a, b);
-      console.log("visitorInf", this.visitorInf);
       if (a.length && JSON.stringify(a) != JSON.stringify(b)) {
         a.map((item) => {
           if (item.payload.data) {
@@ -532,7 +514,6 @@ export default {
             return true;
           }
         });
-        console.log(arr);
         this.chatList = [...arr];
         this.testList();
         this.spinning = false;
@@ -554,13 +535,6 @@ export default {
       }
     },
     isSDKReady(a, b) {
-      // console.log(a, b, this.conversationList);
-      // if (a && this.conversationList.length) {
-      //   this.imStatus = true;
-      //   this.getIsSDKReady();
-      // } else if (a) {
-      //   this.getIsSDKReady();
-      // }
       if (a) {
         let that = this;
         let promise = this.tim(this.imInfo.sdkAppID).getConversationList();
@@ -579,10 +553,6 @@ export default {
       }
     },
     conversationList(a, b) {
-      // if (a && a.length && this.isSDKReady && !this.imStatus) {
-      //   this.imStatus = true;
-      //   this.getIsSDKReady();
-      // }
     },
   },
   methods: {
@@ -594,22 +564,17 @@ export default {
     //远程结束，消息弹框关闭
     sessionRcend() {
       this.showLongDistanceIng = false;
-      console.log("this.timer1", this.timer1);
       const that = this;
       clearInterval(that.timer1); //关闭远程进行中的轮巡时间
       that.timer1 = null;
       clearInterval(that.statusTimer); //关闭插件远程进行中的轮巡时间
       that.statusTimer = null;
-      console.log(that.timer1);
-      console.log("远程控制中轮巡时间关闭");
     },
     getRcstartMessage(text) {
-      console.log(text);
       this.RcstartMessage = text;
       this.RcendMessage = "";
     },
     getRcendMessage(text) {
-      console.log(text);
       this.RcendMessage = text;
       this.RcstartMessage = "";
     },
@@ -629,14 +594,6 @@ export default {
       clearInterval(that.timer2); //关闭远程未开始的轮巡时间
       that.timer2 = null;
       setTimeout(() => {
-        console.log(
-          "this.RcendMessage",
-          this.RcendMessage,
-          "this.RcstartMessage",
-          this.RcstartMessage,
-          "this.teleMessage",
-          this.teleMessage
-        );
         if (
           this.RcstartMessage == "" &&
           this.teleMessage.OrayInit.Type !== "3" &&
@@ -655,7 +612,6 @@ export default {
             "CppOnOrayInfo",
             { OrayInit: OrayInit },
             (error, result) => {
-              console.log("远程创建失败");
               this.RcstartMessage = "";
               this.RcendMessage = "";
               this.$store.commit("getTeleMessage", ""); //清除VUEX里的远程地址信息
@@ -758,13 +714,6 @@ export default {
             this.RcstartMessage = "";
             this.RcendMessage = "远程控制已结束";
             //访客端点断开无需发送，客服获取到回调判断发送断开访客再返回给客服
-            // const data = {
-            //   msgText: "远程控制已结束",
-            //   rcEndAccount: this.sessionObj.guestImAccount,
-            //   sendType: "automatic",
-            //   subMsgType: "rcend",
-            // };
-            // this.$bus.$emit("sendCustomMessage", data); //发送自定义远程结束消息
             this.showLongDistanceIng = false;
           }
         );
@@ -788,10 +737,8 @@ export default {
     receiveLongDistance() {
       //1.判断是否有回调
       //2.判断是否为客户端
-      console.log(this.DistanceDate);
       if (external.call) {
         //2.判断客户端是否支持远程协助
-        console.log("this.DistanceDate", this.DistanceDate);
         let OrayInit = {
           Type: "1",
           Ctrl: "0",
@@ -806,7 +753,6 @@ export default {
             "CppOnOrayInfo",
             { OrayInit: OrayInit },
             (error, result) => {
-              console.log(result);
               if (result.message !== "Success.") {
                 // const data = {
                 //   msgText: "远程控制连接失败",
@@ -818,7 +764,6 @@ export default {
                 this.noticeVisible = true;
                 this.showLongDistance = false;
               } else {
-                console.log("我可以进行远程哦");
                 this.showLongDistance = false;
                 let OrayInit = {
                   Type: "2",
@@ -834,22 +779,12 @@ export default {
                     "CppOnOrayInfo",
                     { OrayInit: OrayInit },
                     (error, result) => {
-                      console.log("访客创建了桌面会话aaa");
                       setTimeout(() => {
-                        console.log(
-                          "this.RcstartMessage",
-                          this.RcstartMessage,
-                          " this.RcendMessage",
-                          this.RcendMessage,
-                          "this.teleMessage",
-                          this.teleMessage
-                        );
                         if (
                           this.RcstartMessage == "" &&
                           this.RcendMessage == "" &&
                           this.teleMessage == ""
                         ) {
-                          console.log("远程创建失败");
                           const data = {
                             msgText: "远程控制连接失败",
                             rcEndAccount: this.sessionObj.guestImAccount,
@@ -862,14 +797,12 @@ export default {
                     }
                   );
                 } catch (e) {
-                  console.log("创建桌面会话失败", e);
                 }
               }
             }
           );
         } catch (e) {}
       } else {
-        console.log("这不是客户端");
         let OrayInit = {
           OrayInit: {
             AppID: "285933877118",
@@ -881,17 +814,14 @@ export default {
         axios
           .post("http://127.0.0.1:3388/oray/postcreateclient", OrayInit)
           .then((res) => {
-            console.log(res);
             if (res.status == 200) {
               let url = "http://127.0.0.1:3388/oray/status?callback=cb_status";
               let url2 =
                 "http://127.0.0.1:3388/oray/getclient?callback=cb_createclient&Id=121212121212";
               setTimeout(() => {
                 axios.get(url).then((res) => {
-                  console.log(res);
                   if (res.data.Info.Status == 1) {
                     axios.get(url2).then((res) => {
-                      console.log(res);
                       if (res.data.Info.Status == 1) {
                         const data = {
                           msgText: this.sessionObj.guestName + "接受了远程",
@@ -900,20 +830,11 @@ export default {
                           sendType: "automatic",
                           subMsgType: "acceptrc",
                         };
-                        console.log(data);
                         this.showLongDistance = false;
                         this.showLongDistanceIng = true;
                         this.$bus.$emit("sendCustomMessage", data); //发送自定义接受远程消息
                       }
                       setTimeout(() => {
-                        console.log(
-                          "this.RcstartMessage",
-                          this.RcstartMessage,
-                          " this.RcendMessage",
-                          this.RcendMessage,
-                          "res.data.Info.Status",
-                          res.data.Info.Status
-                        );
                         if (
                           this.RcstartMessage == "" &&
                           res.data.Info.Status == 1
@@ -936,7 +857,6 @@ export default {
 
               this.statusTimer = setInterval(() => {
                 axios.get(url).then((res) => {
-                  console.log(res);
                   if (res.data.status == 1) {
                     this.$store.commit("getModMessage", res.data); //轮巡的信息放到vuex里
                     this.clientStatus = res.data.Info.Status;
@@ -946,7 +866,6 @@ export default {
             }
           })
           .catch(() => {
-            console.log("111111111111");
             this.$message.error("远程插件未打开");
             const data = {
               msgText: "对方拒绝了你的远程请求",
@@ -982,11 +901,6 @@ export default {
     getMOreFn() {
       //一旦历史消息时间与腾讯云消息时间有大于等于情况，均拉去历史消息
       if (this.historyList.length) {
-        // console.log(
-        //   this.historySessionList,
-        //   this.progressSessionList,
-        //   this.currentMessageList.length
-        // );
         if (this.progressSessionList.length) {
           if (
             this.historySessionList.length &&
@@ -1037,18 +951,12 @@ export default {
     },
     closeSpping() {
       setTimeout(() => {
-        console.log("*********************/*/*/*/*/");
         this.spinning = false;
         console.log(this.spinning);
       }, 500);
     },
     //获取历史消息
     searchChatRecords() {
-      console.log(
-        this.historySessionList,
-        this.historySessionList[this.historySessionList.length - 1].msgTime,
-        this.historySessionList[0].msgTime
-      );
       let params = {
         orgId: this.guestInfo.orgId,
         visitorAccount: this.sessionObj.guestImAccount,
@@ -1093,7 +1001,6 @@ export default {
       });
     },
     getIsSDKReady() {
-      console.log(this.conversationList, "this.conversationList");
       this.queuesObj = {
         payload: {
           data: {
@@ -1104,10 +1011,6 @@ export default {
         time: "",
         type: "",
       };
-      console.log(
-        this.conversationList.length,
-        this.sessionObj.serviceImAccount
-      );
       if (this.conversationList.length) {
         let flag = false;
         this.conversationList.map((item, index) => {
@@ -1136,9 +1039,7 @@ export default {
                           "queuinglocation";
                         this.queuesObj.time = moment().format("X");
                         this.queuesObj.type = "TIMCustomElem";
-                        console.log("44444444444444444");
                         this.isShow = true;
-                        // this.progressSessionList = [this.queuesObj]
                       }
                     }
                   });
@@ -1161,7 +1062,6 @@ export default {
               this.Request.post("/guest/session/waiting/count", params).then(
                 (res) => {
                   if (res.data.status) {
-                    // console.log(res.data.waitingCount, this.queuesObj);
                     if (res.data.waitingCount) {
                       this.queuesObj.payload.data.msgText =
                         res.data.waitingCountTip;
@@ -1169,9 +1069,7 @@ export default {
                         "queuinglocation";
                       this.queuesObj.time = moment().format("X");
                       this.queuesObj.type = "TIMCustomElem";
-                      // console.log(this.queuesObj);
                       this.isShow = true;
-                      // this.progressSessionList = [this.queuesObj]
                     }
                   }
                 }
@@ -1191,14 +1089,12 @@ export default {
           this.Request.post("/guest/session/waiting/count", params).then(
             (res) => {
               if (res.data.status) {
-                // console.log(res.data.waitingCount, this.queuesObj);
                 if (res.data.waitingCount) {
                   this.queuesObj.payload.data.msgText =
                     res.data.waitingCountTip;
                   this.queuesObj.payload.data.subMsgType = "queuinglocation";
                   this.queuesObj.time = moment().format("X");
                   this.queuesObj.type = "TIMCustomElem";
-                  // console.log(this.queuesObj);
                   this.isShow = true;
                 }
               }
@@ -1249,14 +1145,12 @@ export default {
                 if (item) this.progressSessionList.push(item);
               });
               this.historySessionList = historySessionList;
-              // console.log(this.progressSessionList, this.historySessionList);
             } else {
               this.progressSessionList = [...a];
             }
           } else {
             this.progressSessionList = [...a];
           }
-          // console.log(this.historySessionList, this.progressSessionList);
           if (
             this.historySessionList.length &&
             this.progressSessionList.length &&
@@ -1268,41 +1162,15 @@ export default {
           } else {
             this.isSave = true;
           }
-          // this.isCheckouting = true;
-          //校验当前会话类型
-          /**
-           * sessionType 会话类型, 0:临时待定会话,1:排队中会话,2:已接入会话,3:留言会话
-           */
-          // this.conversationList.map((item, index) => {
-          //   if (item.userProfile.userID == this.sessionObj.serviceImAccount) {
-          //     this.$store
-          //       .dispatch("checkoutConversation", item.conversationID)
-          //       .then(() => {
-          //         this.isCheckouting = false;
-          //         if (this.sessionObj.sessionType == "1") {
-          //           //开启计时器，获取实时排队数据
-          //           this.getQueuesCount();
-          //         }
-          //         //获取历史消息列表
-          //         // this.getHistoryList();
-          //       })
-          //       .catch(() => {
-          //         this.isCheckouting = false;
-          //       });
-          //   }
-          // });
+        
         }
       });
     },
     //监听消息更新，校验指令消息
     testList() {
       //结束旧会话，请求新的会话id，并存储
-      // subMsgType == "transfer" ||  subMsgType == "reception"
-
       //结束会话  在点在发送消息按钮重新走会话流程
-      // subMsgType =="stopsession"
       let list = [...this.progressSessionList, ...this.chatList];
-      console.log("list", list);
       this.InSessionList = list;
       this.chatList.forEach((item, i) => {
         if (item.type == "TIMCustomElem") {
@@ -1311,7 +1179,6 @@ export default {
               ? JSON.parse(item.payload.data)
               : item.payload.data;
         }
-        console.log(item);
         if (
           item.type == "TIMCustomElem" &&
           item.payload.data.subMsgType == "reception"
@@ -1378,7 +1245,6 @@ export default {
                     guestName: res.data.sessionInfo.guestName,
                   };
                   this.$store.commit("getSessionObj", obj);
-                  console.log("22222222222222222222");
                   this.isShow = false;
                 }
               }
@@ -1409,7 +1275,6 @@ export default {
           item.payload.data.subMsgType == "stopsession" &&
           item.payload.data.msgText == "正在为您转接人工客服，请等候"
         ) {
-          console.log("智能客服结束会话");
           //清除回话信息
           clearInterval(this.timer);
           //转接或结束会话
@@ -1440,7 +1305,6 @@ export default {
               "/guest/session/question/list",
               this.guestInfo
             ).then((res) => {
-              console.log("***************************");
               if (res.data.status) {
                 if (res.data.sessionInfo) {
                   let obj = {
@@ -1453,14 +1317,12 @@ export default {
                     aiAnswerStyle: res.data.sessionInfo.aiAnswerStyle,
                   };
                   this.$store.commit("getSessionObj", obj);
-                  console.log("333333333333333333");
                   // this.isShow = false;
                   this.conversationList.map((item, index) => {
                     console.log(
                       item.userProfile.userID == obj.serviceImAccount
                     );
                     if (item.userProfile.userID == obj.serviceImAccount) {
-                      // console.log(item.conversationID);
                       this.$store
                         .dispatch("checkoutConversation", item.conversationID)
                         .then(() => {
@@ -1475,10 +1337,6 @@ export default {
                               params
                             ).then((res) => {
                               if (res.data.status) {
-                                console.log(
-                                  res.data.waitingCount,
-                                  this.queuesObj
-                                );
                                 if (res.data.waitingCount) {
                                   this.isShow = true;
                                   if (this.queuesObj.payload.data) {
@@ -1489,8 +1347,6 @@ export default {
                                     this.queuesObj.time = moment().format("X");
                                     this.queuesObj.type = "TIMCustomElem";
                                   }
-                                  console.log("111111111111111111111");
-                                  // this.progressSessionList = [this.queuesObj]
                                 }
                               }
                             });
@@ -1545,17 +1401,8 @@ export default {
               arr.splice(index, 1, "");
             }
           });
-          // console.log(arr, arrEmpty(arr));
           arr = arrEmpty(arr);
           list = [...arr];
-          // this.isShow = true;
-          // if (
-          //   this.progressSessionList[index].type == "TIMCustomElem" &&
-          //   this.progressSessionList[index].payload.data.subMsgType ==
-          //     "queuinglocation"
-          // ) {
-          //   this.progressSessionList.splice(index, 1, item);
-          // }
           this.getQueuesCount(2);
         }
       });
@@ -1573,30 +1420,12 @@ export default {
         this.Request.post("/guest/session/waiting/count", params).then(
           (res) => {
             if (res.data.status) {
-              console.log(res.data.waitingCount, this.queuesObj, val);
               // if (val == 2) {
               if (res.data.waitingCount) {
                 this.queuesObj.payload.data.msgText = res.data.waitingCountTip;
                 if (val == 1) this.queuesObj.time = moment().format("X");
               } else {
-                // this.queuesObj.payload.msgText = "正在接入。。。";
               }
-              // let index = this.progressSessionList.length - 1;
-              //删除之前排队，创建新的排队
-              console.log(this.progressSessionList, this.queuesObj);
-              // if (
-              //   this.progressSessionList[index].type == "TIMCustomElem" &&
-              //   this.progressSessionList[index].payload.data.subMsgType ==
-              //     "queuinglocation"
-              // ) {
-              //   this.progressSessionList.splice(index, 1, this.queuesObj);
-              // } else {
-              //   this.progressSessionList = [
-              //     ...this.progressSessionList,
-              //     this.queuesObj
-              //   ];
-              // }
-              // }
             }
           }
         );
@@ -1807,9 +1636,6 @@ export default {
         text-align: center;
         // bottom: 5px;
         font-size: 12px;
-        // border: 1px solid #e9eaec;
-        // background-color: #fff;
-        // color: #2d8cf0;
       }
     }
   }

@@ -19,7 +19,6 @@ import {
 Vue.prototype.tim = tim
 Vue.prototype.TIM = TIM
 Vue.prototype.$bus = new Vue() // event Bus 用于无关系组件间的通信。
-// Vue.prototype.$jsonp = VueJsonp;
 Vue.use(Antd);
 Vue.use(VueJsonp);
 Vue.config.productionTip = false;
@@ -28,7 +27,6 @@ Vue.prototype.Request = Request;
 window.CloseIM = CloseIM;
 window.OnOrayInfo = OnOrayInfo;
 window.cb_createclient = cb_createclient;
-// document.cookie = "JSESSIONID=AC1FDF6B781A5825E37E760E2BD83EF0";
 new Vue({
   router,
   store,

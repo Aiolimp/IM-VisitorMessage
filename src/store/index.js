@@ -18,8 +18,6 @@ export default new Vuex.Store({
   },
   getters: {
     hidden(state) {
-      // eslint-disable-next-line no-unused-vars
-      // console.log('--------hidden---------')
       const temp = state.current 
       if (typeof document.hasFocus !== 'function') {
         return document.hidden
@@ -44,13 +42,6 @@ export default new Vuex.Store({
       }
       if (options.message.includes("接口需要 SDK 处于 ready 状态后才能调用")) {
         console.log("接口需要 SDK 处于 ready 状态后才能调用", Modal);
-        // Modal.warning({
-        //   title: "提示",
-        //   content: "页面超时，点击确定刷新页面",
-        //   onOk() {
-        //     history.go(0);
-        //   }
-        // });
         state.basic.watchImMStatus = true;
         return
       }

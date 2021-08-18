@@ -48,16 +48,6 @@ export function throttle(func, wait) {
  * @param {Number} count
  */
 export function titleNotify(count) {
-  // const hasNewMessage = count > 0
-  // if (hasNewMessage) {
-  //   if (document.title.search(/\((.*?)\)/) >= 0) {
-  //     document.title = document.title.replace(/\((.*?)\)/, `(${count > 99 ? '99+' : count})`)
-  //   } else {
-  //     document.title = `(${count})${document.title}`
-  //   }
-  // } else {
-  //   document.title = document.title.replace(/\((.*?)\)/, '')
-  // }
   if (count) {
     document.title = '您有新消息！';
 
@@ -142,18 +132,13 @@ export function CloseIM() {
       sendType: "automatic",
       subMsgType: "refuserc",
     };
-    console.log(data);
     store.commit('getRefuseDate',data)
   }
 }
 
 //监听客户端消息返回
 export function OnOrayInfo(obj) {
-  console.log(obj, '消息回调');
   store.commit("getTeleMessage", JSON.parse(obj));
 }
 export function cb_createclient(obj) {
-  console.log(111111111);
-  console.log(obj, '消息回调');
-  // store.commit("getTeleMessage", JSON.parse(obj));
 }

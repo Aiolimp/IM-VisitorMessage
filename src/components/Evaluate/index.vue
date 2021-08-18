@@ -23,17 +23,7 @@
             :tooltips="desc"
           />
           <span class="ant-rate-text">{{ desc[formInline.appraiseValue - 1] }}</span>
-          <!-- <div class="explain">
-            <div>不太满意</div>
-            <div>一般满意</div>
-            <div>满意</div>
-            <div>很满意</div>
-            <div>非常满意</div>
-          </div> -->
         </a-form-model-item>
-        <!-- <a-form-model-item label="备注" prop="appraiseDesc">
-          <a-input v-model="formInline.appraiseDesc" type="textarea" />
-        </a-form-model-item> -->
       </a-form-model>
     </a-modal>
 
@@ -70,10 +60,6 @@ export default {
     ...mapState({
       sessionObj: (state) => state.basic.sessionObj,
     }),
-    //   visible:function(){
-    //       console.log('fdsafdsafdsaf')
-    //       return this.modelStatus
-    //   }
   },
   watch: {
     modelStatus(a, b) {
@@ -88,10 +74,7 @@ export default {
   //方法集合
   methods: {
     handThrottle() {
-      let that = this;
-      // this.formInline.appraiseValue = this.formInline.appraiseValue - 1;
       let params = {
-        // ...that.formInline,
         appraiseValue:this.formInline.appraiseValue - 1,
         orgId: this.$route.query.orgId,
         sessionId: this.sessionObj.id,
@@ -112,12 +95,10 @@ export default {
     },
     handleOk() {
       this.findPersonDebounce()
-      // throttle(this.handThrottle, 500);
     },
     handleCancel() {
       this.visible = false;
       this.$emit("cancelModel", false);
-      //   console.log(this.visible)
       this.$refs["ruleForm"].resetFields();
     },
   },

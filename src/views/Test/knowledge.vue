@@ -2,10 +2,6 @@
 <template>
   <div class='knowledge'>
     <div class="title"><span>猜您想问:</span>
-      <!-- <a-icon
-        :type="isShow ? 'down' : 'up'"
-        class="icon"
-      /> -->
     </div>
     <div
       :class="{AAA:isPC}"
@@ -56,10 +52,6 @@
           @click="sendMessage(item)"
         >{{item.title}}</p>
       </div>
-      <!-- <messagesendbox
-        v-show="false"
-        :IntellectMessage="IntellectMessage"
-      ></messagesendbox> -->
     </div>
   </div>
 </template>

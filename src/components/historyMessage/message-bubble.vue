@@ -124,11 +124,6 @@ export default {
           handleClientMethods("CppOnDownloadUrl", {
             url: that.message.msgContent.ImageInfoArray[0].URL
           });
-          // that.downloadIamge(that.message.payload.imageInfoArray[0].imageUrl);
-          // that.downloadByBlob(
-          //   that.message.payload.imageInfoArray[0].imageUrl,
-          //   "qfy_" + new Date().getTime()
-          // );
           break;
         default:
           break;

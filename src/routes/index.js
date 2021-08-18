@@ -1,7 +1,6 @@
 const routes = [
   {
     path: "/",
-    // redirect: "/conversation",
     component: () => import("@/views/Test/index.vue")
   },
   {

@@ -140,7 +140,6 @@ export default {
             type == 1 &&
             !res.data.navigationFlag
           ) {
-            console.log("转人工未开启导航分配");
             let paramy = {
               orgId: this.$route.query.orgId,
               sessionId: res.data.sessionInfo.id,
@@ -175,7 +174,6 @@ export default {
       this.Request.get("/guest/session/service/acc/assign", params).then(
         (res) => {
           if (res.data.status) {
-            console.log("22222222222222");
             let obj = {
               id: res.data.sessionInfo.id,
               guestImAccount: res.data.sessionInfo.guestImAccount,
@@ -203,7 +201,6 @@ export default {
       };
       this.Request.get("/guest/session/im/account/create", params).then(
         (res) => {
-          console.log(res.data);
           let that = this;
           if (res.data.status && res.data.imAccount) {
             this.$store.commit('getVisitorInf',res.data.sessionId)
@@ -238,7 +235,6 @@ export default {
         this.Request.get("/guest/session/query/guest/info/by/ext", params).then(
           (res) => {
             resolve(res);
-            console.log("res", res);
           }
         );
       });
@@ -314,7 +310,6 @@ export default {
                 aiAnswerStyle: res.data.sessionInfo.aiAnswerStyle,
                 guestName: res.data.sessionInfo.guestName,
               };
-              console.log(obj);
               this.$store.commit("getSessionObj", obj);
               this.$bus.$emit("scroll-bottom");
             }else{
@@ -423,7 +418,6 @@ export default {
       this.closeDistanceState = type
     },
     onReceiveMessage({ data: messageList }) {
-      console.log(messageList);
       const arr = messageList;
       arr.map((item) => {
         if (item) {
@@ -479,7 +473,6 @@ export default {
           }
         }
       });
-      console.log("收到新消息");
       try {
         external && external.call
           ? external.call("CppMessageUpdate", { count: 1 }, (error, result) => {
