@@ -66,7 +66,7 @@ export default {
       timer: "",
       aiServiceFlag: false,
       aiServiceId: "",
-      closeDistanceState:null
+      closeDistanceState: null,
     };
   },
   computed: {
@@ -203,7 +203,7 @@ export default {
         (res) => {
           let that = this;
           if (res.data.status && res.data.imAccount) {
-            this.$store.commit('getVisitorInf',res.data.sessionId)
+            this.$store.commit("getVisitorInf", res.data.sessionId);
             this.index = 0;
             clearTimeout(this.timer);
             this.createSig(res.data.imAccount, res.data.imPassword);
@@ -291,7 +291,7 @@ export default {
     },
     onOK() {
       if (this.aiServiceFlag && this.aiServiceId != "" && this.questionId) {
-              this.visible = false;
+        this.visible = false;
         let paramy = {
           orgId: this.$route.query.orgId,
           sessionId: this.aiServiceId,
@@ -312,8 +312,8 @@ export default {
               };
               this.$store.commit("getSessionObj", obj);
               this.$bus.$emit("scroll-bottom");
-            }else{
-              this.$message.error('转人工失败')
+            } else {
+              this.$message.error("转人工失败");
             }
           }
         );
@@ -342,6 +342,7 @@ export default {
           });
         });
     },
+   
     initListener() {
       // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
       this.tim(this.infoObj.sdkAppID).on(
@@ -414,8 +415,8 @@ export default {
           return "";
       }
     },
-    sendCloseDistance(type){
-      this.closeDistanceState = type
+    sendCloseDistance(type) {
+      this.closeDistanceState = type;
     },
     onReceiveMessage({ data: messageList }) {
       const arr = messageList;
@@ -430,8 +431,8 @@ export default {
             //收到客服远程控制结束
             if (
               dataInfo.subMsgType == "rcend" &&
-              dataInfo.rcEndAccount !== this.sessionObj.guestImAccount&&
-              this.closeDistanceState!==1
+              dataInfo.rcEndAccount !== this.sessionObj.guestImAccount &&
+              this.closeDistanceState !== 1
             ) {
               const data = {
                 msgText: "远程控制已结束",
@@ -439,9 +440,9 @@ export default {
                 sendType: "automatic",
                 subMsgType: "rcend",
               };
-              this.$bus.$emit("sendCustomMessage", data);//发送自定义远程已结束消息
+              this.$bus.$emit("sendCustomMessage", data); //发送自定义远程已结束消息
               this.$bus.$emit("sessionRcend", true);
-              this.$bus.$emit('sendRcendMessage',data.msgText)//用来判断客服是否发送了此消息
+              this.$bus.$emit("sendRcendMessage", data.msgText); //用来判断客服是否发送了此消息
             }
             //会话结束访客还没有接受是否远程
             if (dataInfo.subMsgType == "stopsession") {
@@ -454,8 +455,8 @@ export default {
                 sendType: "automatic",
                 subMsgType: "rcstart",
               };
-              this.$bus.$emit("sendCustomMessage", data);//发送自定义远程已开始消息
-              this.$bus.$emit('sendRcstartMessage',data.msgText)//用来判断客服是否发送了此消息
+              this.$bus.$emit("sendCustomMessage", data); //发送自定义远程已开始消息
+              this.$bus.$emit("sendRcstartMessage", data.msgText); //用来判断客服是否发送了此消息
             }
             //取消远程
             if (dataInfo.subMsgType == "cancelrc") {
@@ -468,7 +469,7 @@ export default {
                 sendType: "manual",
                 subMsgType: "rcrun",
               };
-              this.$bus.$emit("sendCustomMessage", data);//发送自定义远程进行中消息
+              this.$bus.$emit("sendCustomMessage", data); //发送自定义远程进行中消息
             }
           }
         }

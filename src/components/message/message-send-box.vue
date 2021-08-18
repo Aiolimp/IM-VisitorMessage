@@ -393,8 +393,6 @@ export default {
     //访客端发送自定义消息
     sendCustomMessage(data) {
       let data1 = JSON.stringify(data);
-      console.log(data1);
-      console.log(this.sessionObj.serviceImAccount);
       if (this.sessionObj.serviceImAccount&&data1) {
         let message = this.tim(this.imInfo.sdkAppID).createCustomMessage({
           to: this.sessionObj.serviceImAccount,
@@ -408,7 +406,6 @@ export default {
           },
         });
         // setTimeout(()=>{
-        console.log(message);
         this.tim(this.imInfo.sdkAppID)
           .sendMessage(message)
           .then((res) => {

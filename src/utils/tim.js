@@ -3,7 +3,6 @@ import COS from "cos-js-sdk-v5";
 
 
 function tim (SDKAppID){
-  console.log(SDKAppID)
   let options = {
     SDKAppID: SDKAppID // 接入时需要将0替换为您的即时通信 IM 应用的 SDKAppID
   };
@@ -12,7 +11,6 @@ function tim (SDKAppID){
   
   // 设置 SDK 日志输出级别，详细分级请参见 setLogLevel 接口的说明
   tim.setLogLevel(1); // 普通级别，日志量较多，接入时建议使用
-  // tim.setLogLevel(1); // release 级别，SDK 输出关键信息，生产环境时建议使用
   
   // 注册 COS SDK 插件
   tim.registerPlugin({'cos-js-sdk': COS});
