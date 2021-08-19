@@ -63,11 +63,9 @@ export default {
   },
   watch: {
     modelStatus(a, b) {
-      console.log(a, b);
     },
   },
   mounted() {
-    console.log(this.modelStatus);
     this.visible = this.modelStatus;
     this.findPersonDebounce = throttle(this.handThrottle, 200);
   },
